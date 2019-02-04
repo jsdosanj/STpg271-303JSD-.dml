@@ -1,0 +1,410 @@
+--JSD Jasvant Dosanjh
+
+-- pg271 Selected CLAS table attributes for CLAS id P0001
+
+SELECT CLAS_CRSE_DISC AS 'DISC'
+      ,CLAS_CRSE_ID AS 'CID'
+      ,CLAS_YR AS 'YR'
+      ,CLAS_TERM AS 'TR'
+      ,CLAS_SECT_CAMP AS 'CMP'
+      ,CLAS_SECT_ID AS 'SID'
+      ,CLAS_REG_CD AS 'REGCD'
+      ,CLAS_PROF_ID AS 'PID'
+      ,CLAS_DAYS AS 'DAYS'
+  FROM CLAS
+  WHERE CLAS_PROF_ID = 'P001';
+
+-- Page 272, Statement A, INSTANCE WHERE CLST_CRSE_DISC IS LESS THAN 1500
+ SELECT CLST_CRSE_DISC AS 'DISC'
+	  ,CLST_CRSE_ID AS 'CID'
+	  ,CLST_CLAS_YR AS 'YR'
+  	  ,CLST_CLAS_TERM AS 'TR'
+      ,CLST_SECT_CAMP AS 'CMP'
+	  ,CLST_SECT_ID AS 'SECT ID'
+	  ,CLST_STUD_ID AS 'STUD ID'
+  FROM CLST
+  WHERE CLST_CRSE_ID <> 1500;
+  
+-- Page 273, Statement A instance where prof_id is p001
+SELECT CLAS_CRSE_DISC AS 'DISC'
+      ,CLAS_CRSE_ID AS 'CID'
+      ,CLAS_YR AS 'YR'
+      ,CLAS_TERM AS 'TR'
+      ,CLAS_SECT_CAMP AS 'CMP'
+      ,CLAS_SECT_ID AS 'SID'
+      ,CLAS_REG_CD AS 'REGCD'
+      ,CLAS_PROF_ID AS 'PID'
+      ,CLAS_DAYS AS 'DAYS'
+  FROM CLAS
+  WHERE CLAS_SECT_ID <= 1500;
+
+-- Page 274, Statement A, instance where clas_yr is less than 2016
+SELECT CLAS_CRSE_DISC AS 'DISC'
+      ,CLAS_CRSE_ID AS 'CID'
+      ,CLAS_YR AS 'YR'
+      ,CLAS_TERM AS 'TR'
+      ,CLAS_SECT_CAMP AS 'CMP'
+      ,CLAS_SECT_ID AS 'SID'
+      ,CLAS_REG_CD AS 'REGCD'
+      ,CLAS_PROF_ID AS 'PID'
+      ,CLAS_DAYS AS 'DAYS'
+  FROM CLAS
+  WHERE CLAS_YR < 2016; 
+
+-- Page 274, Statement B, instance where crse_sdat is after 1/1/1993
+SELECT CRSE_DISC AS 'DISC'
+      ,CRSE_ID AS 'ID'
+  FROM CRSE
+  WHERE CRSE_Sdat >= '1/1/1993';
+
+-- Page 275, Statement A, select certain attributes from table
+SELECT CRSE_DISC  AS 'DISC'
+      ,CRSE_ID  AS 'ID'
+      ,CRSE_Cred * 0.25
+FROM CRSE; 
+
+-- Page 275, Statement B , select certain attributes and an alias
+SELECT CRSE_DISC  AS 'DISC'
+      ,CRSE_ID  AS 'ID'
+      ,CRSE_Cred * 0.25 AS 'Credit 15 Minutes'
+FROM   CRSE;
+
+-- Page 275, Statement C, use common attribute + an alias and date  arithmetic
+SELECT CRSE_DISC AS 'DISC'
+      ,CRSE_ID AS 'ID'
+      ,CRSE_Sdat AS 'Start date'
+FROM   CRSE 
+WHERE  CRSE_Sdat >= GETDATE() - 2016;
+
+-- Page 276, Statement A, generate INSTANCES AND ADD A REVISION DATE 360 DAYS FROM CRSE_Sdat
+SELECT CRSE_DISC AS 'DISC'
+      ,CRSE_ID AS 'CID'
+      ,CRSE_Titl AS 'CT'
+      ,CRSE_Cred AS 'CC'
+      ,CRSE_Sdat AS 'Start Date'
+	  ,DATEADD(day,360,CRSE_Sdat) AS 'Revision Date'
+FROM   CRSE 
+
+-- Page 277, Statement A, list contents of certain prof_id's
+SELECT CLAS_CRSE_DISC AS 'DISC'
+      ,CLAS_CRSE_ID AS 'CID'
+      ,CLAS_YR AS 'YR'
+      ,CLAS_TERM AS 'TR'
+      ,CLAS_SECT_CAMP AS 'CMP'
+      ,CLAS_SECT_ID AS 'SID'
+      ,CLAS_REG_CD AS 'REGCD'
+      ,CLAS_PROF_ID AS 'PID'
+      ,CLAS_DAYS AS 'DAYS'
+  FROM CLAS
+  WHERE CLAS_PROF_ID = 'P002' OR CLAS_PROF_ID = 'P003';
+
+-- Page 277, Statement B, find 3 credit hour crse_sdat
+SELECT CRSE_DISC AS 'DISC'
+      ,CRSE_ID AS 'ID'
+      ,CRSE_Cred AS 'CREDIT'
+FROM   CRSE 
+WHERE CRSE_Sdat > '1/1/1986' AND CRSE_Cred > 3;
+
+-- Page 278, Statement A, find 3 credit hour crse_sdat or the crse_id is 1200
+SELECT CRSE_DISC AS 'DISC'
+      ,CRSE_ID AS 'ID'
+      ,CRSE_Cred AS 'CREDIT'
+FROM   CRSE 
+WHERE (CRSE_Sdat > '1/1/1986' AND CRSE_Cred > 3) OR CRSE_ID = 1200;
+ 
+-- Page 278, Statement B, find crse's that are 3 credit hour
+SELECT CRSE_DISC AS 'DISC'
+      ,CRSE_ID AS 'ID'
+      ,CRSE_Cred AS 'CREDIT'
+FROM   CRSE 
+WHERE NOT (CRSE_Cred = 3); 
+
+-- Page 279, Statement A, find courses that are between 1 & 3 credit hours
+SELECT * 
+FROM   CRSE
+WHERE  CRSE_Cred BETWEEN 1 AND 3; 
+
+-- Page 280, Statement A, find a course with atleast 1 credit or above 3 credits
+SELECT * 
+FROM   CRSE 
+WHERE  CRSE_Cred >= 1 
+       AND CRSE_Cred <= 3; 
+
+-- Page 280, Statement B, find students with no middle name
+SELECT STUD_ID AS 'STUDENT ID'
+      ,STUD_fnam AS 'FIRST NAME'
+	  ,STUD_mnam AS 'MIDDLE NAME'
+      ,STUD_lnam AS 'LAST NAME'
+FROM   STUD 
+WHERE  STUD_mnam IS NULL; 
+
+-- Page 281, Statement A, find student whose first name starts with certain letters
+SELECT PROF_ID AS 'PROFESSOR ID'
+      ,PROF_FNAM AS 'PROFESSOR FIRST NAME'
+	  ,PROF_MINI AS 'PROFESSOR MIDDLE NAME'
+      ,PROF_HI_DEG AS 'PROFESSOR HIGHEST DEGREE'
+FROM   PROF 
+WHERE  PROF_FNAM LIKE 'Ia%';
+
+-- Page 281, Statement B, find students with first name, all uppercase letter
+
+SELECT STUD_ID AS 'STUDENT ID'
+      ,STUD_fnam AS 'FIRST NAME'
+	  ,STUD_mnam AS 'MIDDLE NAME'
+      ,STUD_lnam AS 'LAST NAME'
+FROM   STUD 
+WHERE  Upper(STUD_fnam) LIKE 'RO%';
+
+-- Page 281, Statement C, find students whose first name spelling is not Carr_
+SELECT STUD_ID AS 'STUDENT ID'
+      ,STUD_fnam AS 'FIRST NAME'
+	  ,STUD_mnam AS 'MIDDLE NAME'
+      ,STUD_lnam AS 'LAST NAME'
+FROM   STUD 
+WHERE  STUD_fnam NOT LIKE 'Carr_';
+
+-- Page 281, Statement D, find student whose first name is Jasvant
+
+SELECT *
+FROM   STUD 
+WHERE  STUD_fnam LIKE 'Jasvant';
+
+-- Page 282, Statement A, find student whose stud_id is s001 or s0
+
+SELECT * 
+FROM   STUD 
+WHERE  STUD_ID = 'S001'
+       OR STUD_ID = 'S002';
+
+SELECT * 
+FROM   STUD 
+WHERE  STUD_ID = 'S001'
+       OR STUD_ID IN ('S001', 'S005');
+
+-- Page 282, Statement B, use IN operator
+select *
+from clst
+where clst_crse_id in (1740,1730);
+
+-- Page 282, Statement C, use a subquery using IN operator
+select prof_id AS 'PROFESSOR ID'
+	,PROF_HI_DEG AS 'PROFESSOR HIGHEST DEGREE'
+from prof
+where prof_id in(select prof_id from clas);
+
+--Page 290, STATEMENT A, ORDERING A LISTING
+SELECT CLST_SECT_CAMP
+      ,CLST_CLAS_YR
+      ,CLST_STUD_ID
+      ,CLST_SECT_ID
+      ,CLST_CLAS_TERM
+FROM CLST
+ORDER BY CLST_STUD_ID;
+
+--Page 290, Statement B, Find EVERYTHING AND ORDER IT BY PROF_MINI
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+ORDER BY PROF_MINI;
+
+-- Page 290, Statement C, Find FIND EVERYTHING AND ORDER IT DESC
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+ORDER BY PROF_MINI DESC
+
+-- Page 291, Statement A, Find EVERYTHING AND ORDER IT BY SEVERAL ATTRIBUTES
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+ORDER BY PROF_LNAM
+  ,PROF_FNAM
+  ,PROF_MINI;
+
+-- Page 291, Statement B, Find Stuff WHERE SDAT < 21-Jan-2016 AND HDEG = BACH NAD ORDER IT BY PROF_ID, PROF_FNAM DESCENDING
+SELECT STUD_ID as 'SID'
+      ,STUD_fnam as'FN'
+      ,STUD_mnam as 'MN'
+      ,STUD_lnam as 'LN'
+      ,STUD_Deg_Lvl as 'DGL'
+      ,STUD_Yrs_Lvl as 'YRL'
+      ,STUD_COLL_GPA as 'GPA'
+      ,STUD_COLL_SDAT as 'Start Date'
+      ,STUD_FIN_AID as 'Financial Aid'
+      ,STUD_SCHO_SHIP as 'Scholarships'
+FROM STUD
+WHERE STUD_COLL_SDAT < '21-Jan-2012'
+ AND STUD_SCHO_SHIP < STUD_FIN_AID * 2
+ORDER BY STUD_ID
+  ,STUD_fnam DESC;
+
+--Page 292, STATEMENT A, LISTING UNIQUE VALUES
+SELECT DISTINCT CLST_CLAS_TERM
+FROM CLST
+
+--Page 293, STATEMENTS A-D, LEARN TO USE aggregate FUNCTIONS
+select sum(Stud_scho_ship) as 'Total Scholarship $ for all students'
+from stud
+
+select avg(Stud_scho_ship) as 'Avg of Scholarship $'
+from stud
+
+select max(Stud_scho_ship) as 'Highest Scholarship amt'
+from stud
+
+select count(Stud_scho_ship) as '*'
+from stud
+--Page 294, STATEMENT A, USE COUNT & DISTINCT FUNCTION IN SIMPLE TERMS
+SELECT COUNT(DISTINCT CRSE_DISC)
+FROM CRSE
+
+--Page 294, STATEMENT B, USE COUNT & DISTINCT FUNCTION W/ A WHERE CLAUSE
+SELECT COUNT(DISTINCT CRSE_DISC)
+FROM CRSE
+WHERE CRSE_DISC = 'CIS';
+
+--Page 294, STATEMENT C, USE COUNT FUNCTION W/ NO SPECIFICATIONS
+SELECT COUNT(*)
+FROM CRSE
+WHERE CRSE_DISC = 'CIS';
+-- Page 295, Statement A, Find Stuff GET THE HIGHEST PROF_ID AND ITS ATTRIBUTES OR SOMETHING LIKE THAT
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+WHERE PROF_ID = MAX(PROF_ID);
+
+-- Page 296, Statement A, Find Stuff GET THE HIGHEST PROF_ID AND ITS ATTRIBUTES OR SOMETHING LIKE THAT
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+WHERE PROF_ID = (
+  SELECT MAX(PROF_ID)
+  FROM PROF);
+
+-- Page 296, Statement B, Find Stuff SUM SOME GARBAGE
+SELECT STUD_fnam as'First Name'
+      ,STUD_mnam as 'Last Name'
+   ,SUM(STUD_FIN_AID) AS STUD_FIN_SUM AS 'TOTAL FIN AID'
+FROM STUD;
+
+-- Page 296, Statement C, Find Stuff SUM SOME GARBAGE
+SELECT STUD_fnam as'First Name'
+      ,STUD_mnam as 'Last Name'
+   ,SUM(STUD_FIN_AID / 3) AS STUD_FIN_SUM AS 'MONTHLY FIN AID'
+FROM STUD;
+
+--Page 297, Statement A, Use aggregate functions to summarize DATA
+SELECT CLAS_PROF_FNAM
+FROM  CLAS
+HAVING (CLAS_CRSE_ID > '1200');
+
+-- Page 298, Statement A, Find Stuff, DO A GROUP BY
+SELECT STUD_ID as 'SID'
+      ,STUD_fnam as'FN'
+      ,STUD_mnam as 'MN'
+      ,STUD_lnam as 'LN'
+      ,STUD_SCHO_SHIP as 'Scholarships'
+FROM STUD
+GROUP BY STUD_SCHO_SHIP;
+ORDER BY STUD_SCHO_SHIP;
+
+-- Page 299, Statement A, Find DO SOME FUNCTIONS ON OPERATABLE DATA TYPES, GROUP BY, ORDER BY
+SELECT STUD_ID
+ ,SUM(STUD_FIN_AID + STUD_SCHO_SHIP) AS SCHOOL_FUNDS AS 'FUNDING'
+FROM STUD
+GROUP BY STUD_ID
+HAVING (SUM(STUD_FIN_AID + STUD_SCHO_SHIP) < 10000)
+ORDER BY SUM(STUD_FIN_AID + STUD_SCHO_SHIP) DESC;
+
+-- Page 301, Statement A, Find Stuff FROM 2 TABLES WHERE T1.CODE = T2.CODE
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+ ,CLAS
+WHERE PROF.PROF_ID = CLAS.CLAS_PROF_ID;
+
+-- Page 302, Statement A, Find Stuff FROM 2 TABLES WHERE T1.CODE = T2.CODE, AND REPORT ALL PROFESSORS THAT ARE TEACHING A CLASS
+SELECT PROF.PROF_ID
+   ,PROF.PROF_FNAM
+   ,PROF.PROF_LNAM
+   ,PROF.PROF_HI_DEG
+FROM PROF
+ ,CLAS
+WHERE PROF.V_CODE = CLAS.CLAS_PROF_ID
+ORDER BY PROF.P_PRICE;
+
+-- Page 302, Statement B, Find Stuff WHERE SOMETHING = SOMETHING AND A DATE > 15-Jan-2016
+SELECT STUD_ID as 'SID'
+      ,STUD_fnam as'FN'
+      ,STUD_mnam as 'MN'
+      ,STUD_lnam as 'LN'
+      ,STUD_Deg_Lvl as 'DGL'
+      ,STUD_Yrs_Lvl as 'YRL'
+      ,STUD_COLL_GPA as 'GPA'
+      ,STUD_COLL_SDAT as 'Start Date'
+      ,STUD_FIN_AID as 'Financial Aid'
+      ,STUD_SCHO_SHIP as 'Scholarships'
+FROM STUD
+ ,CLST
+WHERE STUD.STUD_ID = CLST_STUD_ID
+ AND STUD_COLL_SDAT > '15-Jan-2012';
+
+-- Page 303, Statement A, Find Stuff WHERE STUFF = STUFF, MERGED TABLES
+SELECT CRSE_DISC AS 'DISC'
+   ,CRSE_ID AS 'CID'
+   ,CRSE_Titl AS 'TITLE'
+   ,CLAS_SECT_ID AS 'SECTION'
+   ,PROF_ID AS 'CLAS PROF'
+   ,PROF_FNAM AS 'PROF FNAME'
+   ,PROF_LNAM AS 'PROF LNAME'
+   ,CLST_STUD_ID AS 'SID'
+   ,STUD_FNAM AS 'Student FNAME'
+FROM PROF, CLAS ,CRSE, STUD, CLST
+WHERE
+    (CLAS_PROF_ID = PROF_ID)
+AND (CRSE_DISC = CLAS_CRSE_DISC)
+AND (CRSE_ID = CLAS_CRSE_ID)
+AND ((CLST_CRSE_DISC = CLAS_CRSE_DISC)
+AND (CLST_CRSE_ID = CLAS_CRSE_ID)
+AND (CLST_SECT_ID = CLAS_SECT_ID))
+AND (CLST_STUD_ID= STUD_ID)
+GROUP BY  CRSE_DISC, CRSE_ID, CRSE_Titl, CLAS_SECT_ID, PROF_ID, PROF_FNAM, PROF_LNAM, CLST_STUD_ID, STUD_FNAM;
+
+-- Page 303, Statement B, Find Stuff WHERE SOMETHING = SOMETHING IN 2 TABLES
+SELECT CLAS_CRSE_DISC as 'DESC'
+      ,CLAS_CRSE_ID as 'CID'
+      ,CLAS_YR as 'YR'
+      ,CLAS_TERM as 'TR'
+      ,CLAS_SECT_CAMP as 'CMP'
+      ,CLAS_SECT_ID as 'SID'
+      ,CLAS_PROF_ID as 'PID'
+   ,PROF_FNAME as 'Prof FName'
+   ,PROF_LNAME as 'Prof LName'
+FROM CLAS C
+ ,PROF P
+WHERE CLAS_PROF_ID = PROF_ID
+ORDER BY CLAS_CRSE_DISC, CLAS_CRSE_ID, CLAS_SECT_ID, CLAS_PROF_ID ;
