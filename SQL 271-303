@@ -1,0 +1,269 @@
+-- Find STUFF THAT EXSISTS IN THE SUB-QUERY, AND REPORT ATTRIBUTES
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+WHERE EXISTS (
+  SELECT *
+  FROM PROF
+  WHERE PROF_ID = 'A001'             
+  ); -- Page 283, Statement A,        
+
+-- Find STUFF THAT EXSISTS IN THE NESTED SUB-QUERY, AND REPORT ATTRIBUTES
+SELECT STUD_ID as 'SID'
+      ,STUD_fnam as'FN'
+      ,STUD_mnam as 'MN'
+      ,STUD_lnam as 'LN'
+      ,STUD_Deg_Lvl as 'DGL'
+      ,STUD_Yrs_Lvl as 'YRL'
+      ,STUD_COLL_GPA as 'GPA'
+      ,STUD_COLL_SDAT as 'Start Date'
+      ,STUD_FIN_AID as 'Financial Aid'
+      ,STUD_SCHO_SHIP as 'Scholarships'
+FROM STUD
+WHERE EXISTS (
+  SELECT *
+  FROM STUD
+  WHERE STUD_FIN_AID <= 5000.00
+  );-- Page 283, Statement B
+
+-- Find Stuff AND REPORT ATTRIBUTES
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF; -- Page 286, Statement A
+
+-- Find Stuff AND REPORT ATTRIBUTES
+SELECT STUD_ID as 'SID'
+      ,STUD_fnam as'FN'
+      ,STUD_mnam as 'MN'
+      ,STUD_lnam as 'LN'
+      ,STUD_Deg_Lvl as 'DGL'
+      ,STUD_Yrs_Lvl as 'YRL'
+      ,STUD_COLL_GPA as 'GPA'
+      ,STUD_COLL_SDAT as 'Start Date'
+      ,STUD_FIN_AID as 'Financial Aid'
+      ,STUD_SCHO_SHIP as 'Scholarships'
+FROM STUD;-- Page 288, Statement A
+
+-- Find EVERYTHING AND ORDER IT BY PROF_MINI
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+ORDER BY PROF_MINI;-- Page 290, Statement B
+
+-- Find FIND EVERYTHING AND ORDER IT DESC
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+ORDER BY PROF_MINI DESC;-- Page 290, Statement C
+
+-- Find EVERYTHING AND ORDER IT BY SEVERAL ATTRIBUTES
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+ORDER BY PROF_LNAM
+  ,PROF_FNAM
+  ,PROF_MINI;-- Page 291, Statement A
+
+-- Find Stuff WHERE SDAT < 21-Jan-2016 AND HDEG = BACH NAD ORDER IT BY PROF_ID, PROF_FNAM DESCENDING
+SELECT STUD_ID as 'SID'
+      ,STUD_fnam as'FN'
+      ,STUD_mnam as 'MN'
+      ,STUD_lnam as 'LN'
+      ,STUD_Deg_Lvl as 'DGL'
+      ,STUD_Yrs_Lvl as 'YRL'
+      ,STUD_COLL_GPA as 'GPA'
+      ,STUD_COLL_SDAT as 'Start Date'
+      ,STUD_FIN_AID as 'Financial Aid'
+      ,STUD_SCHO_SHIP as 'Scholarships'
+FROM STUD
+WHERE STUD_COLL_SDAT < '21-Jan-2012'
+ AND STUD_SCHO_SHIP < STUD_FIN_AID * 2
+ORDER BY STUD_ID
+  ,STUD_fnam DESC;-- Page 291, Statement B
+
+-- Find Stuff FIND UNQIUE MIDDLE INTINALS
+SELECT DISTINCT PROF_MINI
+FROM PROF;-- Page 292, Statement A
+
+SELECT AVG(STUD_SCHO_SHIP) AS 'Average Scholarship'
+   ,SUM(STUD_SCHO_SHIP) AS 'Total Scholarships'
+   ,MAX(STUD_SCHO_SHIP) AS 'Highest Scholarship'
+   ,AVG(STUD_FIN_AID) AS 'Average FIN AID'
+   ,SUM(STUD_FIN_AID) AS 'Total FIN AID'
+   ,MAX(STUD_FIN_AID) AS 'Highest FIN AID'
+   ,COUNT(*) AS 'Total students'
+FROM STUD; -- Page 293, Statement A
+
+-- Find Stuff GET THE HIGHEST PROF_ID AND ITS ATTRIBUTES OR SOMETHING LIKE THAT
+--SELECT PROF_ID AS 'ID'
+--      ,PROF_FNAM AS 'FN'
+--      ,PROF_MINI AS 'MN'
+--      ,PROF_LNAM AS 'LN'
+--      ,PROF_HI_DEG AS 'HD'
+--      ,PROF_COLL_SDAT 'Start Date'
+--FROM PROF
+--WHERE PROF_ID = MAX(PROF_ID);-- Page 295, Statement A
+
+-- Find Stuff GET THE HIGHEST PROF_ID AND ITS ATTRIBUTES OR SOMETHING LIKE THAT
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+WHERE PROF_ID = (
+  SELECT MAX(PROF_ID)
+  FROM PROF
+  ); -- Page 296, Statement A
+
+-- Find Stuff SUM SOME GARBAGE
+SELECT STUD_fnam as'First Name'
+      ,STUD_mnam as 'Middle Name'
+   ,SUM(STUD_FIN_AID + STUD_SCHO_SHIP) AS 'Total funds'
+FROM STUD -- Page 296, Statement B
+GROUP BY STUD_fnam, STUD_mnam;
+
+-- Find Stuff SUM SOME GARBAGE
+SELECT DISTINCT STUD_fnam as'First Name'
+      ,STUD_mnam as 'Last Name'
+   ,STUD_FIN_AID AS 'FIN AID'
+   ,SUM(STUD_FIN_AID / 3) AS 'FIN AID PER MONTH'
+   ,(SELECT AVG(STUD_FIN_AID) FROM STUD) AS 'AVERAGE'
+FROM STUD -- Page 296, Statement C
+GROUP BY STUD_fnam, STUD_mnam, STUD_FIN_AID;
+
+
+
+
+-- Find Stuff, DO A GROUP BY
+SELECT STUD_ID as 'SID'
+      ,STUD_fnam as'FN'
+      ,STUD_mnam as 'MN'
+      ,STUD_lnam as 'LN'
+      ,STUD_SCHO_SHIP as 'Scholarships'
+FROM STUD
+GROUP BY STUD_ID
+  ,STUD_fnam
+  ,STUD_mnam
+  ,STUD_lnam
+  ,STUD_SCHO_SHIP
+ORDER BY STUD_SCHO_SHIP; -- Page 298, Statement A, #### REVISE, THIS DOESN'T WORK ####
+
+-- Find DO SOME FUNCTIONS ON OPERATABLE DATA TYPES, GROUP BY, ORDER BY
+SELECT STUD_ID
+   ,SUM(STUD_FIN_AID + STUD_SCHO_SHIP) AS 'FUNDING'
+FROM STUD
+GROUP BY STUD_ID
+HAVING (SUM(STUD_FIN_AID + STUD_SCHO_SHIP) < 10000)
+ORDER BY (SUM(STUD_FIN_AID + STUD_SCHO_SHIP)) DESC; -- Page 299, Statement A
+
+-- Find Stuff FROM 2 TABLES WHERE T1.CODE = T2.CODE
+SELECT PROF_ID AS 'ID'
+      ,PROF_FNAM AS 'FN'
+      ,PROF_MINI AS 'MN'
+      ,PROF_LNAM AS 'LN'
+      ,PROF_HI_DEG AS 'HD'
+      ,PROF_COLL_SDAT 'Start Date'
+FROM PROF
+ ,CLAS
+WHERE PROF.PROF_ID = CLAS.CLAS_PROF_ID; -- Page 301, Statement A
+
+-- Find Stuff FROM 2 TABLES WHERE T1.CODE = T2.CODE, AND ORDER IT
+-- REPORT ALL PROFESSORS THAT ARE TEACHING A CLASS
+SELECT PROF.PROF_ID
+   ,PROF.PROF_FNAM
+   ,PROF.PROF_LNAM
+   ,PROF.PROF_HI_DEG
+FROM PROF
+ ,CLAS
+WHERE PROF.PROF_ID = CLAS.CLAS_PROF_ID
+ORDER BY PROF.PROF_ID; -- Page 302, Statement A
+
+
+-- Find Stuff WHERE SOMETHING = SOMETHING AND A DATE > 15-Jan-2016
+SELECT STUD_ID as 'SID'
+      ,STUD_fnam as'FN'
+      ,STUD_mnam as 'MN'
+      ,STUD_lnam as 'LN'
+      ,STUD_Deg_Lvl as 'DGL'
+      ,STUD_Yrs_Lvl as 'YRL'
+      ,STUD_COLL_GPA as 'GPA'
+      ,STUD_COLL_SDAT as 'Start Date'
+      ,STUD_FIN_AID as 'Financial Aid'
+      ,STUD_SCHO_SHIP as 'Scholarships'
+FROM STUD
+ ,CLST
+WHERE STUD.STUD_ID = CLST_STUD_ID
+ AND STUD_COLL_SDAT > '15-Jan-2012'; -- Page 302, Statement B
+
+-- Find Stuff WHERE STUFF = STUFF, MERGED TABLES
+SELECT CRSE_DISC AS 'DISC'
+   ,CRSE_ID AS 'CID'
+   ,CRSE_Titl AS 'TITLE'
+   ,CLAS_SECT_ID AS 'SECTION'
+   ,PROF_ID AS 'CLAS PROF'
+   ,PROF_FNAM AS 'PROF FNAME'
+   ,PROF_LNAM AS 'PROF LNAME'
+   ,CLST_STUD_ID AS 'SID'
+   ,STUD_FNAM AS 'Student FNAME'
+FROM PROF, CLAS ,CRSE, STUD, CLST
+WHERE
+    (CLAS_PROF_ID = PROF_ID) -- related Attributes Across all tables
+AND (CRSE_DISC = CLAS_CRSE_DISC)
+AND (CRSE_ID = CLAS_CRSE_ID)
+AND ((CLST_CRSE_DISC = CLAS_CRSE_DISC)
+AND (CLST_CRSE_ID = CLAS_CRSE_ID)
+AND (CLST_SECT_ID = CLAS_SECT_ID))
+AND (CLST_STUD_ID= STUD_ID)
+GROUP BY  CRSE_DISC, CRSE_ID, CRSE_Titl, CLAS_SECT_ID, PROF_ID, PROF_FNAM, PROF_LNAM, CLST_STUD_ID, STUD_FNAM-- Page 303, Statement A
+
+-- Find Stuff WHERE SOMETHING = SOMETHING IN 2 TABLES
+SELECT CLAS_CRSE_DISC as 'DESC'
+      ,CLAS_CRSE_ID as 'CID'
+      ,CLAS_YR as 'YR'
+      ,CLAS_TERM as 'TR'
+      ,CLAS_SECT_CAMP as 'CMP'
+      ,CLAS_SECT_ID as 'SID'
+      ,CLAS_PROF_ID as 'PID'
+   ,PROF_FNAM as 'Prof FName'
+   ,PROF_LNAM as 'Prof LName'
+FROM CLAS C
+ ,PROF P
+WHERE CLAS_PROF_ID = PROF_ID
+ORDER BY CLAS_CRSE_DISC, CLAS_CRSE_ID, CLAS_SECT_ID, CLAS_PROF_ID ; -- Page 303, Statement B
+
+-- Find Stuff WHERE SOMETHING = SOMETHING
+SELECT C.CLAS_CRSE_DISC as 'DESC'
+      ,C.CLAS_CRSE_ID as 'CID'
+      ,C.CLAS_YR as 'YR'
+      ,C.CLAS_TERM as 'TR'
+      ,C.CLAS_SECT_CAMP as 'CMP'
+      ,C.CLAS_SECT_ID as 'SID'
+      ,C.CLAS_PROF_ID as 'PID'
+   ,P.PROF_FNAM as 'Prof FName'
+   ,P.PROF_LNAM as 'Prof LName'
+
+FROM CLAS C
+ ,PROF P
+WHERE C.CLAS_PROF_ID = P.PROF_ID
